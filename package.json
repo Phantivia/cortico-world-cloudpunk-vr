@@ -1,0 +1,61 @@
+{
+  "name": "cortico-world-cloudpunk-vr",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Cortico World for streaming Cloudpunk in VR with the CloudpunkVR mod: the bot rides the game's call channel (VTube Studio picture over Spout in the NPC call box, its lines from the vtuber World), the streamer sees live comments and his recognised speech on a head-locked HUD, the bot sees quests, dialogue and the map and can plan, draw and drive routes.",
+  "author": "Phantivia",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Phantivia/cortico-world-cloudpunk-vr.git"
+  },
+  "homepage": "https://github.com/Phantivia/cortico-world-cloudpunk-vr#readme",
+  "bugs": {
+    "url": "https://github.com/Phantivia/cortico-world-cloudpunk-vr/issues"
+  },
+  "keywords": [
+    "cortico-world",
+    "cortico"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.5.0",
+  "main": "./src/index.ts",
+  "cortico": {
+    "kind": "world",
+    "api": 6,
+    "displayName": "云朋克 Cloudpunk",
+    "tags": [
+      "experimental"
+    ],
+    "describe": "describe.json",
+    "webUiClient": "dist/webui.js"
+  },
+  "files": [
+    "src",
+    "dist/webui.js",
+    "docs",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md",
+    "describe.json"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.webui.json",
+    "build:webui": "node scripts/build-webui.mjs",
+    "prepack": "node scripts/build-webui.mjs"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "cortico": "^0.2.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8",
+    "esbuild": "^0.24.2"
+  },
+  "os": [
+    "win32"
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "tools": [
+    {
+      "name": "cloudpunk_status",
+      "description": "What the game shows right now: where the player is, car speed and fuel, credits, the quest list with how far each map marker is, the dialogue line on screen, what can be interacted with, and the navigation state. see: true also attaches the current picture (the stream view).",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "see": {
+            "type": "boolean"
+          }
+        }
+      },
+      "tags": [
+        "read"
+      ],
+      "summary": {
+        "zh": "看游戏现状：位置、车、钱、任务和标记距离、对话、可交互的东西、导航;可附画面。",
+        "en": "Current game state: place, car, credits, quests and marker distances, dialogue, interactables, navigation; optionally the picture."
+      }
+    },
+    {
+      "name": "cloudpunk_places",
+      "description": "Search the places the game map knows: shops, vendors, gas stations, garages, parking, named places on the full map, quest markers. query: a name or a kind (\"加油站\", \"最近的商店\"); empty lists the nearest. Each result has an id for cloudpunk_navigate, its kind, distance, height difference and direction from where the operator faces; also the kinds of places there are.",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "type": "string"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30
+          }
+        }
+      },
+      "tags": [
+        "read"
+      ],
+      "summary": {
+        "zh": "搜地图上的地点：商店、加油站、停车场、地名、任务点;给编号、距离和方位。",
+        "en": "Search the map: shops, gas stations, parking, named places, quest markers; ids, distance and direction."
+      }
+    },
+    {
+      "name": "cloudpunk_navigate",
+      "description": "Plan a route and draw it on the minimap and the full map. Target: quest (an id from the quest list; default the nearest quest with a marker), or place: parking (nearest parking spot) | car (walk back to the car) | an id from cloudpunk_places | a place name or kind (the nearest best match). In the car the route follows the city traffic lanes to the parking spot nearest the target. While the operator drives a shown route, it is planned again when they leave it, and events give each turn, climb or descent ahead and the destination coming up, in time to say them. drive: true also drives it (or walks it, on foot) through the game's own controls and parks at the end; false only shows the way. Any stick or trigger the operator touches takes the car back and the route stays on the map. Events tell when it arrives or stops.",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "quest": {
+            "type": "string"
+          },
+          "place": {
+            "type": "string"
+          },
+          "drive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "tags": [
+        "act"
+      ],
+      "summary": {
+        "zh": "规划路线(任务、地点名或编号、停车位、回车上)并画在地图上，可替操作员开过去或走过去;操作员自己开时偏航重算、报转弯。",
+        "en": "Plan a route drawn on the maps; optionally drive or walk it for the operator and park at the end."
+      }
+    },
+    {
+      "name": "cloudpunk_stop",
+      "description": "Stop driving or walking and clear the route from the map.",
+      "parameters": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {}
+      },
+      "tags": [
+        "act"
+      ],
+      "summary": {
+        "zh": "停下自动驾驶或步行，清掉路线。",
+        "en": "Stop driving or walking and clear the route."
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "cloudpunk.connection",
+      "description": {
+        "zh": "游戏连上或断开。",
+        "en": "Game connected or disconnected."
+      }
+    },
+    {
+      "type": "cloudpunk.live",
+      "description": {
+        "zh": "操作员在面板上开播或收工。",
+        "en": "The operator went on air or off air from the panel."
+      }
+    },
+    {
+      "type": "cloudpunk.channel",
+      "description": {
+        "zh": "NPC 接进或退出通讯频道(占线时可缇的画面和台词撤下)。",
+        "en": "An NPC took or freed the call channel (the bot's picture and lines step aside meanwhile)."
+      }
+    },
+    {
+      "type": "cloudpunk.dialogue",
+      "description": {
+        "zh": "对话里的一句(说话人和台词)。",
+        "en": "A dialogue line (speaker and text)."
+      }
+    },
+    {
+      "type": "cloudpunk.quest",
+      "description": {
+        "zh": "任务新增、更新或消失，附标记距离。",
+        "en": "Quest added, updated or gone, with marker distance."
+      }
+    },
+    {
+      "type": "cloudpunk.arrived",
+      "description": {
+        "zh": "导航到了(停好车或走到了)。",
+        "en": "Navigation arrived (parked or walked there)."
+      }
+    },
+    {
+      "type": "cloudpunk.autopilot",
+      "description": {
+        "zh": "自动驾驶停下或交还操作员。",
+        "en": "Autopilot stopped or handed back to the operator."
+      }
+    },
+    {
+      "type": "cloudpunk.place",
+      "description": {
+        "zh": "进入新城区。",
+        "en": "Entered a new district."
+      }
+    },
+    {
+      "type": "cloudpunk.mode",
+      "description": {
+        "zh": "上下车、进出菜单和对话。",
+        "en": "Got in or out of the car, menus, dialogue."
+      }
+    },
+    {
+      "type": "cloudpunk.money",
+      "description": {
+        "zh": "信用点变化。",
+        "en": "Credits changed."
+      }
+    },
+    {
+      "type": "cloudpunk.found",
+      "description": {
+        "zh": "游戏弹出获得提示(物品、信用点、新地点)。",
+        "en": "The game's pop-up for something received (item, credits, a new place)."
+      }
+    },
+    {
+      "type": "cloudpunk.hint",
+      "description": {
+        "zh": "屏幕上出现教程提示。",
+        "en": "A tutorial hint came up."
+      }
+    },
+    {
+      "type": "cloudpunk.fuel",
+      "description": {
+        "zh": "油量低于四分之一、十分之一。",
+        "en": "Fuel under a quarter, then a tenth."
+      }
+    },
+    {
+      "type": "cloudpunk.route",
+      "description": {
+        "zh": "导航播报：前方转弯、升降、快到目的地;偏航后重新规划。",
+        "en": "Navigation prompts: turns, climbs and the destination ahead; a new route after leaving it."
+      }
+    },
+    {
+      "type": "cloudpunk.interact",
+      "description": {
+        "zh": "面前出现可以交互的东西。",
+        "en": "Something to interact with came up."
+      }
+    }
+  ],
+  "prompts": [
+    {
+      "key": "worlds.cloudpunk.envPrompt",
+      "title": "云朋克 · 环境提示词",
+      "role": "envPrompt",
+      "content": "你在陪操作员直播《Cloudpunk》(云朋克)。这是一座垂直的赛博朋克城市 Nivalis,主角 Rania 是送货公司 Cloudpunk 的新司机，开一辆会飞的 HOVA 送货，下车步行把货交到人手里。操作员戴着 VR 头显在玩。\r\n\r\n你照常用自己的声音说话，直播间和操作员都听得到。游戏里你接在主角的通讯频道上，像给他打电话的 NPC 一样：坐在驾驶舱里时，你的样子和你正在说的话出现在方向盘左边的通讯屏上;步行时在界面左下角，也在他的左前臂上。直播间通过他的视角看到你和你的台词。NPC 打来电话或和他当面说话时，频道归 NPC,你的画面和台词暂时撤下，通话结束再回来。直播间那层 overlay(弹幕、写字板、字幕)也搬到了他眼前。你也是他的车载领航员。\r\n\r\n现在:{{cloudpunk.live}}。\r\n\r\n你的身体能做的事:\r\n- 看现状：位置、车速和油量、信用点、任务栏(每个任务的地图标记有多远)、屏幕上的对话、面前能交互的东西、导航还剩多远和下一个转弯;需要时附上当前画面(就是直播画面)。\r\n- 搜地图：游戏地图上标着的商店、摊贩、加油站、车库、停车场、地名和任务点，按名字或种类找，给出距离、高低和在他哪一侧。\r\n- 规划路线：去任务、搜到的地点(或直接说名字、种类)、最近的停车位、回到车上;在小地图和全图上画出来，开车时沿城市的交通航线走，终点是目标旁的停车位。他自己开时，偏离路线会自动重新规划，前方转弯、升降和快到目的地会提前告诉你。可以只画路线;他开口让你开的时候，也可以替他开过去(或走过去)并停好车，他一碰摇杆或扳机，车就回到他手里，路线留在地图上。\r\n- 停下自动驾驶、清掉路线。\r\n\r\n游戏的门槛:\r\n- 车只能在停车位上停;停好后人自动下车。步行能走的地方有限，任务标记常在楼里或平台上，要停在旁边再走过去。\r\n- 对话一句一句出现，他按键往下翻;有的对话是通话，车里也会响。\r\n- 任务栏的文字就是游戏给的目标原文。获得物品、信用点、新地点时游戏会弹提示;教程提示也会告诉你。\r\n- 车会耗油，油量低时会告诉你;加油站在地图上。\r\n- 城市分层，车有能飞的高度范围;交通航线是车流走的路。\r\n"
+    }
+  ]
+}
